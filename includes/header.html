@@ -1,0 +1,59 @@
+<?php # header.html - N.Nasteff
+
+// This header includes the session start, config require, and layout files / meta tags
+
+session_start(); // Start a session.
+require('includes/config.php');
+require('includes/error_handler.php');
+
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title><?php echo (isset($page_title)) ? $page_title : 'The Jazz Emporium'; ?></title>
+    <meta charset="utf-8">
+    <meta name="description" content="Delwaware Tech ITN Server Hard Drive Assignments">
+    <meta name="viewport" content="width=device-width">
+    <meta name="author" content="N. Nasteff">
+    <link href="https://fonts.googleapis.com/css?family=Muli&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="includes/bootstrap.min.css">
+    <link rel="stylesheet" href="includes/custom.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="includes/jscript.js"></script>
+    
+</head>
+<body>
+        <div class="header_custom" style="font-family: 'Muli', serif;">
+       
+         <center> <h2><center><b>The <font color="red">J</font><font color="blue">a</font><font color="yellow">z</font><font color="green">z</font> Emporium</b></center></h2>
+         <table cellspacing="0" cellpadding="10">
+   
+    <tr>
+        <td><center><a class="header" href="index.php"><b><center>Home</a></td>
+        <td><center><a class="header" href="browse_albums.php"><b><center>Browse<br>Albums</a></td>
+        <td><a class="header" href="view_cart.php"><b><center>View<br>Cart</a></td>
+    
+    <?php
+        
+        // If user is logged in, create link to logout
+
+        if (isset($_SESSION['email'])){
+            echo '<td><a class="header" href="logout.php" title="Logout"><b>Logout</a></td>';
+        }
+
+        // If user is not logged in, create link to login/register
+
+        else {
+            echo '<td><a class="header" href="login.php"><center><b>Login /<br> Register</a></td>';
+    }
+
+    ?>
+        
+        <td><a class="header" href="contact.php"><center><b>Contact<br>Us</b></a></td>
+    </tr></table>
+
+        </div>
+         </div>
+<br><br>
+     </center>
+     <div class="body_main">
