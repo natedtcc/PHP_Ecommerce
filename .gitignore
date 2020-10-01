@@ -1,0 +1,7 @@
+  
+
+
+# GITIGNORE START
+
+/includes/store_db_config.php
+/includes/mailscript.php
