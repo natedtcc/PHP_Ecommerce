@@ -7,9 +7,13 @@
 
 $page_title = 'Place an order';
 
+// If an order has been sent, set page title to a confirmation sting
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $page_title = 'Thank you for your order';
 }
+
+// Include header and mailscript.php (for email generation)
 
 include('includes/header.html');
 include('includes/mailscript.php');
@@ -38,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && count($_SESSION['cart']) > 0) {
   // Validate all user data....
 
   if (isset($trimmed['order_id']) && is_numeric($trimmed['order_id'])) {
-    $order_id = $trimmed['order_id'];
+  $order_id = $trimmed['order_id'];
   }
 
   if (isset($trimmed['shipping']) && in_array($trimmed['shipping'], $shipping_array)) {
@@ -104,10 +108,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && count($_SESSION['cart']) > 0) {
 
   // Assign cart product ids to an array..
 
-  $pid_array = array();
+  $aid_array = array();
   $i = 0;
   foreach ($_SESSION['cart'] as $x => $y) {
-    $pid_array[$i] = (int) $x;
+    $aid_array[$i] = (int) $x;
     $i++;
   }
 
@@ -141,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && count($_SESSION['cart']) > 0) {
 
     // Create insert statements for the order_contents database
 
-    foreach ($pid_array as $product_id) {
+    foreach ($aid_array as $product_id) {
       $sql = "INSERT INTO order_contents (`order_id`, `product_id`, `quantity`) VALUES ($order_id, $product_id, "
         . $_SESSION['cart'][$product_id]['quantity'] . ")";
 

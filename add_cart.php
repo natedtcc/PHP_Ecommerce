@@ -7,14 +7,18 @@
 $page_title = 'Add to Cart';
 include ('includes/header.html');
 
-if (isset ($_GET['pid']) && filter_var($_GET['pid'], FILTER_VALIDATE_INT, array('min_range' => 1))  ) { // Check for a print ID.
-	$pid = (int)$_GET['pid'];
+ // Check for an album ID.
+
+if (isset ($_GET['aid']) 
+	&& filter_var($_GET['aid'], FILTER_VALIDATE_INT, array('min_range' => 1))){
+	
+	$aid = (int)$_GET['aid'];
 
 	// Check if the cart already contains one of these prints;
 	// If so, increment the quantity:
-	if (isset($_SESSION['cart'][$pid])) {
+	if (isset($_SESSION['cart'][$aid])) {
 
-		$_SESSION['cart'][$pid]['quantity']++; // Add another.
+		$_SESSION['cart'][$aid]['quantity']++; // Add another.
 
 		// Display a message:
 		echo '<h3 class="display-3"><center>Added to cart!</h3>';
@@ -28,7 +32,7 @@ if (isset ($_GET['pid']) && filter_var($_GET['pid'], FILTER_VALIDATE_INT, array(
 		// Retrieve album price from database..
 		
 		require(MYSQL);
-		$price_query = "SELECT price FROM products WHERE product_id=$pid";
+		$price_query = "SELECT price FROM products WHERE product_id=$aid";
 		$result = mysqli_query ($store_db_conn, $price_query);
 
 		// If product ID is valid...
@@ -39,7 +43,7 @@ if (isset ($_GET['pid']) && filter_var($_GET['pid'], FILTER_VALIDATE_INT, array(
 			
 			// Add to the session cart
 
-			$_SESSION['cart'][$pid] = array ('quantity' => 1, 'price' => $price, 'prod_id' => $pid);
+			$_SESSION['cart'][$aid] = array ('quantity' => 1, 'price' => $price, 'prod_id' => $aid);
 
 			// Display confirmation
 

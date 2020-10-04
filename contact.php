@@ -26,7 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$name = htmlspecialchars($trimmed['name']);
 	}
 
-	if (isset($trimmed['email']) && filter_var($trimmed['email'], FILTER_VALIDATE_EMAIL)){
+	if (isset($trimmed['email']) && filter_var($trimmed['email'], 
+		FILTER_VALIDATE_EMAIL)){
 
 		$email = $trimmed['email'];
 	}
@@ -47,14 +48,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 		// Build string to be sent via email
 		
-		$email_string = "You have received a message from a potential customer on your website<br><br>Name: $name<br>
-						Email: $email<br>Message:<br><br>$message<br>";
+		$email_string = "You have received a message from a potential customer" 
+			. " on your website!<br><br>Name: $name<br>Email: $email<br>"
+			. "Message:<br><br>$message<br>";
 
 		// Send the message
 
 		send_email(EMAIL, $email_string, 'Message Received');
 		
-		echo '<center><h3>Thank you, your message has been sent.<br>Please allow 1-2 business days for a reply.</h3>';
+		echo '<center><h3>Thank you, your message has been sent.<br>Please allow '
+			. '1-2 business days for a reply.</h3>';
 
 	}
 
@@ -71,23 +74,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 elseif ($_SERVER['REQUEST_METHOD'] != 'POST') {
 
-echo '<h3 class="display-3"><center>Contact Us</h3>
-<table class="center"><tr><td><p>Need to contact us directly? Fill out the forms below and click submit. We will get back to you as soon as possible. Thank you!</td></tr></table>
-	<form action="contact.php" method="post">
-		<center><fieldset>
-			<p><b>Name:<br></b> <input type="text" required="required" name="name" size="30" maxlength="30"/></p>
-			<p><b>Email Address:<br></b> <input type="email" required="required" name="email" size="30" maxlength="60"/> </p>
-			<p><b>Enter your message below:</b><br> <textarea required="required" name="message" rows="7" cols="40"></textarea> <br></p>
-			<input type="submit" value="Submit" /></p>
-		</fieldset>
-	</form>';
+echo 
+	'<h3 class="display-3 text-center">
+	Contact Us
+	</h3>
+<table class="center">
+	<tr>
+		<td>
+			<p>
+				Need to contact us directly? Fill out the forms below
+				and click submit. We will get back to you as soon as possible. 
+				Thank you!
+			</p>
+		</td>
+	</tr>
+</table>
+
+<form action="contact.php" method="post">
+	<fieldset>
+		<div class="contacts">
+			<p>
+				Name:<br>
+				<input type="text" required="required" name="name" 
+					size="30" maxlength="30"/>
+			</p>
+			<p>
+				Email Address:<br>
+				<input type="email" required="required" name="email"
+					size="30" maxlength="60"/>
+			</p>
+			<p>
+				Enter your message below:<br>
+				<textarea required="required" name="message" rows="7"
+					cols="40">
+				</textarea><br>
+			</p>
+			<input type="submit" value="Submit" />
+		</div>
+	</fieldset>
+</form>';
 }
 
 // Any other situation...
 
 else{
 
-	error_string_gen('Ooops, looks like you messed up. Hit back and try again.<br>Make sure you enter all your information correctly!');
+	error_string_gen('Ooops, looks like you messed up. Hit back and try again.'
+		. '<br>Make sure you enter all your information correctly!');
 
 
 }

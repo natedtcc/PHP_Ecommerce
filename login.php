@@ -1,6 +1,5 @@
 <?php # login.php - N. Nasteff
 
-
 // This page creates the login form which is then posted to itself
 // and processed accordingly. 
 
@@ -27,7 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
 	// Validate the password:
 	if (!empty($_POST['password'])) {
-		$password = mysqli_real_escape_string ($store_db_conn, $_POST['password']);
+		$password = 
+			mysqli_real_escape_string ($store_db_conn, $_POST['password']);
 	} 
 
 	else {
@@ -39,15 +39,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if ($email && $password) {
 
 		// Query the database:
-		$customer_query = "SELECT email, password, customer_id FROM customers WHERE (email='$email' AND password=SHA1('$password'))";		
-		$result = mysqli_query ($store_db_conn, $customer_query) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+		$customer_query = "SELECT email, password, customer_id FROM customers "
+			. "WHERE (email='$email' AND password=SHA1('$password'))";		
+		$result = mysqli_query ($store_db_conn, $customer_query) or 
+			trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 		
 		// If the user is found in the DB...	
 
 		if (@mysqli_num_rows($result) == 1) { 
 
-			// Register the login values (keeps the contents of the cart in the session
-			// if the user was not logged in while adding items to the cart)
+			// Register the login values (keeps the contents of the
+			// cart in the session (if the user was not logged in while 
+			// adding items to the cart)
 
 			$_SESSION = $_SESSION + mysqli_fetch_array ($result, MYSQLI_ASSOC); 
 			mysqli_free_result($result);
@@ -79,16 +82,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 } 
 ?>
 
-<center><h3 class="display-3">Login</h3>
-<center><p><small>Your browser must allow cookies in order to log in.</small></p>
+<h3 class="display-3 text-center">
+	Login
+</h3>
+<p>
+	<small>
+		Your browser must allow cookies in order to log in.
+	</small>
+</p>
 <form action="login.php" method="post">
-	<fieldset><center>
-	<p><b>Email Address:</b><br><input type="email" required="required" name="email" size="20" maxlength="60" /></p>
-	<p><b>Password:</b><br><input type="password" required="required" name="password" size="20" maxlength="20" /></p>
-	<div align="center"><input type="submit" name="submit" value="Login" /></div>
+	<fieldset>
+		<p>
+			Email Address:<br>
+			<input type="email" required="required" name="email" 
+				size="20" maxlength="60" />
+		</p>
+		<p>
+			Password:<br>
+			<input type="password" required="required" name="password" 
+				size="20" maxlength="20" />
+		</p>
+		<input type="submit" name="submit" value="Login" />
 	</fieldset>
 </form>
-
-<br><p>Don't have an account? <a href="register.php">Click here to register.</a></p></center></div>
+<br>
+<p>
+	Don't have an account? 
+	<a href="register.php">
+		Click here to register.
+	</a>
+</p>
 
 <?php include ('includes/footer.html'); ?>
