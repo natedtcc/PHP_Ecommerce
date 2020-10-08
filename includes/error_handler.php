@@ -25,7 +25,8 @@ function error_handler ($e_number, $e_message, $e_file, $e_line, $e_vars) {
     // If live, display an error message.
     else {
         error_log($e_message);
-		echo '<center><h4 class="display-4">A system error occurred. We apologize for the inconvenience.</h4><br />';		
+		echo '<center><h4 class="display-4">A system error occurred. '
+		 .'We apologize for the inconvenience.</h4><br />';		
 	}
 
 }

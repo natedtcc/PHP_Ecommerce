@@ -1,43 +1,41 @@
 <?php # view_cart.php - N. Nasteff
 
-  // This page will display the contents of the user's shopping 
-  // cart, or update the quantities of items already added
+// This page will display the contents of the user's shopping 
+// cart, or update the quantities of items already added
 
-  $page_title = 'View Your Shopping Cart';
-  include ('includes/header.html');
+$page_title = 'View Your Shopping Cart';
+include('includes/header.html');
 
-  // Check for form submission, in case user updates quantity of 
-  // items previously added
+// Check for form submission, in case user updates quantity of 
+// items previously added
 
-  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   // Change the quantities..
 
-    foreach ($_POST['qty'] as $k => $v) {
+  foreach ($_POST['qty'] as $k => $v) {
 
-      // Force integer values
-      
-      $prod_id = (int) $k;
-      $qty = (int) $v;
-      
-      // If an item is set to 0 quantity (remove from cart)...
+    // Force integer values
 
-      if ( $qty == 0 ) { 
-        unset($_SESSION['cart'][$prod_id]);
-      } 
+    $prod_id = (int) $k;
+    $qty = (int) $v;
 
-      // If quantity is altered (increased or decreased to a value 
-      // greater than 0)..
+    // If an item is set to 0 quantity (remove from cart)...
 
-      elseif ( $qty > 0 ) $_SESSION['cart'][$prod_id]['quantity'] = $qty;
-    
+    if ($qty == 0) {
+      unset($_SESSION['cart'][$prod_id]);
     }
 
+    // If quantity is altered (increased or decreased to a value 
+    // greater than 0)..
+
+    elseif ($qty > 0) $_SESSION['cart'][$prod_id]['quantity'] = $qty;
   }
+}
 
-  // Retrieve cart (if it isn't empty)...
+// Retrieve cart (if it isn't empty)...
 
-  if (!empty($_SESSION['cart'])) {
+if (!empty($_SESSION['cart'])) {
 
   // Gather information about albums in the cart from the database...
 
@@ -52,7 +50,7 @@
     $cart_query .= $prod_id . ',';
   }
   $cart_query = substr($cart_query, 0, -1) . ') ORDER BY price ASC';
-  $result = mysqli_query ($store_db_conn, $cart_query);
+  $result = mysqli_query($store_db_conn, $cart_query);
 
   // Create a table to display the results, as well as a form 
   // for updating quantities
@@ -83,15 +81,15 @@
 
   // Create variable for total cost..
 
-  $total = 0; 
-  while ($row = mysqli_fetch_array ($result, MYSQLI_ASSOC)) {
+  $total = 0;
+  while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
     // Calculate the total and sub-totals.
-    $subtotal = $_SESSION['cart'][$row['product_id']]['quantity'] 
+    $subtotal = $_SESSION['cart'][$row['product_id']]['quantity']
       * $_SESSION['cart'][$row['product_id']]['price'];
-    
+
     $total += $subtotal;
-    
+
     // Display results (including image of the album) as tabledata
     // Add text+
 
@@ -99,7 +97,7 @@
     \t
     <tr>
       <td align=\"left\">
-        <img src=\"img/".$row['image'].".jpg\" style=\"width:60px;height:60px;\">
+        <img src=\"img/" . $row['image'] . ".jpg\" style=\"width:60px;height:60px;\">
       <td align=\"left\">
         {$row['title']}
       </td>
@@ -111,11 +109,11 @@
       </td>
       <td align=\"center\">
         <input type=\"number\" min=\"0\" size=\"3\" style=\"width: 30px;\"
-        name=\"qty[{$row['product_id']}]\" value=\"{$_SESSION['cart']
-        [$row['product_id']]['quantity']}\" />
+        name=\"qty[{$row['product_id']}]\" 
+        value=\"{$_SESSION['cart'][$row['product_id']]['quantity']}\" />
       </td>
       <td align=\"right\">
-        $" . number_format ($subtotal, 2) . "
+        $" . number_format($subtotal, 2) . "
       </td>
     </tr>
     \n";
@@ -130,22 +128,20 @@
 
   echo '<tr>
     <td colspan="4" align="right"><b>Total:</b></td>
-    <td align="right">$' . number_format ($total, 2) . '</td>
+    <td align="right">$' . number_format($total, 2) . '</td>
   </tr>
   </table>
   <div align="center"><p><center><input type="submit" name="submit" value="Update My Cart" />
   </form><center>Enter a quantity of 0 to remove an item.
   <br /> <br><h5><a href="order_form.php">Checkout</a></p></h5></div>';
 
-  $_SESSION['subtotal'] = number_format ($total, 2);
+  $_SESSION['subtotal'] = number_format($total, 2);
+}
 
-  } 
+// If cart is currently empty...
 
-  // If cart is currently empty...
-
-  else {
+else {
   echo '<h3 class="display-4">Your cart is currently empty.</h3>';
-  }
+}
 
-  include ('includes/footer.html');
-?>
+include('includes/footer.html');

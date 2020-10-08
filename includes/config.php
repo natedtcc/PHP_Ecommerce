@@ -1,7 +1,7 @@
 
 <?php
 
-// Config file -- Set globals and functions here
+// Config file -- Set constants and functions here
 
 // Assign admin email address
 define('EMAIL', 'nnasteff@gmail.com');
@@ -11,6 +11,9 @@ define ('MYSQL', 'includes/store_db_config.php');
 
 // Define base URL for redirects
 define ('BASE_URL', 'localhost');
+
+// Define constant value of site status (Production vs Development)
+define ('LIVE', TRUE);
 
 // Set default timezone
 date_default_timezone_set ('US/Eastern');
@@ -32,12 +35,14 @@ function success_string_gen($string){
 
 }
 
-
-// This function handles SQL queries or displays an error message if the query is
-// unsuccessful
+// This function handles SQL queries or displays an error message 
+// if the query is unsuccessful
 
 function sql_results($query, $store_db_conn){
-	$result =  mysqli_query ($store_db_conn, $query) or trigger_error("Query: $query\n<br />MySQL Error: " . mysqli_error($store_db_conn));
+	$result =  mysqli_query ($store_db_conn, $query) or 
+		trigger_error("Query: $query\n<br />MySQL Error: " 
+		. mysqli_error($store_db_conn));
+	
 	return $result;
 }
 
